@@ -8,6 +8,7 @@ import { addToCartMutation, createCartMutation, editCartItemsMutation, removeFro
 import { getCartQuery } from "./queries/cart";
 import { getCollectionProductsQuery, getCollectionQuery, getCollectionsQuery } from "./queries/collection";
 import { getMenuQuery } from "./queries/menu";
+import { getHomepageSectionsQuery } from "./queries/metaobjects";
 import { getPageQuery, getPagesQuery } from "./queries/page";
 import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } from "./queries/product";
 import {
@@ -449,6 +450,41 @@ export async function getProducts({ query, reverse, sortKey }: { query?: string;
  });
 
  return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+}
+
+export type HomepageSection = {
+ title: string;
+ type: string;
+ order: number;
+ collectionHandle?: string;
+};
+
+export async function getHomepageSections(): Promise<HomepageSection[]> {
+ "use cache";
+ cacheTag(TAGS.collections);
+ cacheLife("days");
+
+ const res = await shopifyFetch<any>({
+  query: getHomepageSectionsQuery,
+ });
+
+ const nodes = removeEdgesAndNodes(res.body.data.metaobjects);
+
+ const sections: HomepageSection[] = nodes
+  .map((n: any) => {
+   const map = Object.fromEntries((n.fields ?? []).map((f: any) => [f.key, f]));
+
+   const title = map.title?.value ?? "";
+   const type = map.type?.value ?? "";
+   const order = Number(map.order?.value ?? 0);
+
+   const collectionHandle = map.collection?.reference?.__typename === "Collection" ? map.collection.reference.handle : undefined;
+
+   return { title, type, order, collectionHandle };
+  })
+  .filter((s: HomepageSection) => s.type && s.collectionHandle);
+
+ return sections.sort((a, b) => a.order - b.order);
 }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.

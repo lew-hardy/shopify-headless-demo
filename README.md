@@ -9,7 +9,7 @@ The project demonstrates a modern Shopify headless architecture where the storef
 ## Live Demo
 
 ```
-https://your-project.vercel.app
+https://shopify-headless-demo.vercel.app/
 ```
 
 ---

@@ -11,16 +11,19 @@ export const metadata = {
 export default async function HomePage() {
  const sections = await getHomepageSections();
 
+ const sectionComponents = {
+  featured_products: ThreeItemGrid,
+  carousel: Carousel,
+ };
+
  return (
   <>
    {sections.map((section) => {
-    if (section.type === "featured_products") {
-     return <ThreeItemGrid key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle!} />;
-    }
-    if (section.type === "carousel") {
-     return <Carousel key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle!} />;
-    }
-    return null;
+    const SectionComponent = sectionComponents[section.type as keyof typeof sectionComponents];
+
+    if (!SectionComponent || !section.collectionHandle) return null;
+
+    return <SectionComponent key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
    })}
    <Footer />
   </>

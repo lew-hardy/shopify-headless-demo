@@ -14,24 +14,50 @@ https://shopify-headless-demo.vercel.app/
 
 ---
 
+## Screenshots
+
+### Homepage
+
+![Homepage](docs/homepage.png)
+
+### Product Page
+
+![Product Page](docs/product-page.png)
+
+### Cart
+
+![Cart](docs/cart.png)
+
+---
+
+## Project Highlights
+
+- Built a **headless Shopify storefront** using Next.js and the Shopify Storefront API
+- Implemented **CMS-driven homepage sections using Shopify Metaobjects**
+- Created a **dynamic section renderer** allowing homepage layout changes without modifying code
+- Implemented full ecommerce functionality including **cart, checkout, product pages, and search**
+- Deployed using **Vercel with automatic CI/CD from GitHub**
+
+---
+
 ## Tech Stack
 
-Frontend
+### Frontend
 
 - Next.js (App Router)
 - React Server Components
 - Tailwind CSS
 
-Commerce
+### Commerce
 
 - Shopify Storefront API
 - Shopify Checkout
 
-CMS
+### CMS
 
 - Shopify Metaobjects (section-driven homepage)
 
-Infrastructure
+### Infrastructure
 
 - Vercel deployment
 - GitHub CI/CD

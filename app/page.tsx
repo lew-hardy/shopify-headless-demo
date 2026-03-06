@@ -15,10 +15,10 @@ export default async function HomePage() {
   <>
    {sections.map((section) => {
     if (section.type === "featured_products") {
-     return <ThreeItemGrid key={`${section.type}-${section.order}`} />;
+     return <ThreeItemGrid key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle!} />;
     }
     if (section.type === "carousel") {
-     return <Carousel key={`${section.type}-${section.order}`} />;
+     return <Carousel key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle!} />;
     }
     return null;
    })}

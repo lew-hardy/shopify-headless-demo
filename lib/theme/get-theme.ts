@@ -1,4 +1,4 @@
-import { themeConfig } from "./config";
+import { themeConfig, type ThemeName } from "./config";
 
 import { Carousel as DefaultCarousel } from "themes/default/sections/carousel";
 import { FeaturedProducts as DefaultFeaturedProducts } from "themes/default/sections/featured-products";
@@ -6,19 +6,30 @@ import { FeaturedProducts as DefaultFeaturedProducts } from "themes/default/sect
 import { Carousel as FashionCarousel } from "themes/fashion/sections/carousel";
 import { FeaturedProducts as FashionFeaturedProducts } from "themes/fashion/sections/featured-products";
 
-export function getThemeSections() {
- switch (themeConfig.activeTheme) {
-  case "fashion":
-   return {
-    featured_products: FashionFeaturedProducts,
-    carousel: FashionCarousel,
-   };
+import { Carousel as ElectronicsCarousel } from "themes/electronics/sections/carousel";
+import { FeaturedProducts as ElectronicsFeaturedProducts } from "themes/electronics/sections/featured-products";
 
-  case "default":
-  default:
-   return {
-    featured_products: DefaultFeaturedProducts,
-    carousel: DefaultCarousel,
-   };
+const themeSectionRegistry: Record<
+ ThemeName,
+ {
+  featured_products: typeof DefaultFeaturedProducts;
+  carousel: typeof DefaultCarousel;
  }
+> = {
+ default: {
+  featured_products: DefaultFeaturedProducts,
+  carousel: DefaultCarousel,
+ },
+ fashion: {
+  featured_products: FashionFeaturedProducts,
+  carousel: FashionCarousel,
+ },
+ electronics: {
+  featured_products: ElectronicsFeaturedProducts,
+  carousel: ElectronicsCarousel,
+ },
+};
+
+export function getThemeSections() {
+ return themeSectionRegistry[themeConfig.activeTheme] ?? themeSectionRegistry.default;
 }

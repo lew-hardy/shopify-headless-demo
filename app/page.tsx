@@ -1,8 +1,7 @@
 import Footer from "components/layout/footer";
 import { getHomepageSections } from "lib/shopify";
+import { getThemeSections } from "lib/theme/get-theme";
 import type { Metadata } from "next";
-import { Carousel } from "themes/default/sections/carousel";
-import { FeaturedProducts } from "themes/default/sections/featured-products";
 
 export const metadata: Metadata = {
  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
@@ -13,11 +12,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
  const sections = await getHomepageSections();
-
- const sectionComponents = {
-  featured_products: FeaturedProducts,
-  carousel: Carousel,
- };
+ const sectionComponents = getThemeSections();
 
  return (
   <>

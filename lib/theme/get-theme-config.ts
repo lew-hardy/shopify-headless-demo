@@ -1,15 +1,15 @@
-import { themeConfig } from "./config";
+import { themeConfig, type ThemeName } from "./config";
 
 import { theme as defaultTheme } from "themes/default/config";
+import { theme as electronicsTheme } from "themes/electronics/config";
 import { theme as fashionTheme } from "themes/fashion/config";
 
-export function getThemeConfig() {
- switch (themeConfig.activeTheme) {
-  case "fashion":
-   return fashionTheme;
+const themeRegistry: Record<ThemeName, typeof defaultTheme> = {
+ default: defaultTheme,
+ fashion: fashionTheme,
+ electronics: electronicsTheme,
+};
 
-  case "default":
-  default:
-   return defaultTheme;
- }
+export function getThemeConfig() {
+ return themeRegistry[themeConfig.activeTheme] ?? themeRegistry.default;
 }

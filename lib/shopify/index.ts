@@ -463,6 +463,7 @@ export type HomepageSection = {
  buttonText?: string;
  buttonLink?: string;
  contentAlignment?: string;
+ contentAlignmentMobile?: string;
 };
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
@@ -496,6 +497,7 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
    const buttonLink = map.button_link?.value ?? "";
 
    const contentAlignment = map.content_alignment?.value ?? "center";
+   const contentAlignmentMobile = map.content_alignment_mobile?.value ?? "center";
 
    return {
     title,
@@ -508,6 +510,7 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
     buttonText,
     buttonLink,
     contentAlignment,
+    contentAlignmentMobile,
    };
   })
   .filter((s: HomepageSection) => s.type);

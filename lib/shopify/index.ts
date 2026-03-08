@@ -459,8 +459,10 @@ export type HomepageSection = {
  collectionHandle?: string;
  subtitle?: string;
  image?: string;
+ imageMobile?: string;
  buttonText?: string;
  buttonLink?: string;
+ contentAlignment?: string;
 };
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
@@ -485,9 +487,15 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
    const collectionHandle = map.collection?.reference?.__typename === "Collection" ? map.collection.reference.handle : undefined;
 
    const subtitle = map.subtitle?.value ?? "";
+
    const image = map.image?.reference?.image?.url ?? map.image?.reference?.url ?? "";
+
+   const imageMobile = map.image_mobile?.reference?.image?.url ?? map.image_mobile?.reference?.url ?? "";
+
    const buttonText = map.button_text?.value ?? "";
    const buttonLink = map.button_link?.value ?? "";
+
+   const contentAlignment = map.content_alignment?.value ?? "center";
 
    return {
     title,
@@ -496,8 +504,10 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
     collectionHandle,
     subtitle,
     image,
+    imageMobile,
     buttonText,
     buttonLink,
+    contentAlignment,
    };
   })
   .filter((s: HomepageSection) => s.type);

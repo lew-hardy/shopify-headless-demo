@@ -14,6 +14,12 @@ export const getHomepageSectionsQuery = /* GraphQL */ `
        ... on Collection {
         handle
        }
+       ... on MediaImage {
+        image {
+         url
+         altText
+        }
+       }
       }
      }
     }

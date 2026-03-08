@@ -457,6 +457,13 @@ export type HomepageSection = {
  type: string;
  order: number;
  collectionHandle?: string;
+ subtitle?: string;
+ image?: string;
+ imageMobile?: string;
+ buttonText?: string;
+ buttonLink?: string;
+ contentAlignment?: string;
+ contentAlignmentMobile?: string;
 };
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
@@ -480,9 +487,33 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
 
    const collectionHandle = map.collection?.reference?.__typename === "Collection" ? map.collection.reference.handle : undefined;
 
-   return { title, type, order, collectionHandle };
+   const subtitle = map.subtitle?.value ?? "";
+
+   const image = map.image?.reference?.image?.url ?? map.image?.reference?.url ?? "";
+
+   const imageMobile = map.image_mobile?.reference?.image?.url ?? map.image_mobile?.reference?.url ?? "";
+
+   const buttonText = map.button_text?.value ?? "";
+   const buttonLink = map.button_link?.value ?? "";
+
+   const contentAlignment = map.content_alignment?.value ?? "center";
+   const contentAlignmentMobile = map.content_alignment_mobile?.value ?? "center";
+
+   return {
+    title,
+    type,
+    order,
+    collectionHandle,
+    subtitle,
+    image,
+    imageMobile,
+    buttonText,
+    buttonLink,
+    contentAlignment,
+    contentAlignmentMobile,
+   };
   })
-  .filter((s: HomepageSection) => s.type && s.collectionHandle);
+  .filter((s: HomepageSection) => s.type);
 
  return sections.sort((a, b) => a.order - b.order);
 }

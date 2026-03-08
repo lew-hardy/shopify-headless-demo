@@ -17,11 +17,28 @@ export default async function HomePage() {
  return (
   <>
    {sections.map((section) => {
-    const SectionComponent = sectionComponents[section.type as keyof typeof sectionComponents];
+    if (section.type === "hero") {
+     const HeroSection = sectionComponents.hero;
+     if (!HeroSection) return null;
 
-    if (!SectionComponent || !section.collectionHandle) return null;
+     return <HeroSection key={`${section.type}-${section.order}`} title={section.title} subtitle={section.subtitle} image={section.image} imageMobile={section.imageMobile} buttonText={section.buttonText} buttonLink={section.buttonLink} contentAlignment={section.contentAlignment} contentAlignmentMobile={section.contentAlignmentMobile} />;
+    }
 
-    return <SectionComponent key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
+    if (section.type === "featured_products") {
+     const FeaturedProductsSection = sectionComponents.featured_products;
+     if (!FeaturedProductsSection || !section.collectionHandle) return null;
+
+     return <FeaturedProductsSection key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
+    }
+
+    if (section.type === "carousel") {
+     const CarouselSection = sectionComponents.carousel;
+     if (!CarouselSection || !section.collectionHandle) return null;
+
+     return <CarouselSection key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
+    }
+
+    return null;
    })}
    <Footer />
   </>

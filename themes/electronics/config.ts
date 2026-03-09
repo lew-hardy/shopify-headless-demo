@@ -4,7 +4,7 @@ export const theme = {
  colors: {
   background: "bg-white",
   text: "text-black",
-  accent: "bg-blue-500",
+  accent: "bg-neutral-700",
  },
 
  layout: {

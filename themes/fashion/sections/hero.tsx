@@ -20,24 +20,26 @@ export function Hero({ title, subtitle, image, imageMobile, buttonText, buttonLi
      {subtitle && <p className="mt-6 text-lg text-white/90">{subtitle}</p>}
 
      {buttonText && buttonLink && (
-      <Link href={buttonLink} className="mt-8 inline-block rounded bg-white px-6 py-3 text-black">
+      <Link href={buttonLink} className="mt-8 inline-block border border-white px-8 py-3 text-sm uppercase tracking-wider text-white transition hover:bg-white hover:text-black">
        {buttonText}
       </Link>
      )}
     </div>
    </div>
 
-   <div className={`absolute inset-0 hidden items-center px-6 md:flex ${desktopAlignmentClasses}`}>
-    <div className="max-w-xl">
-     {title && <h1 className="text-5xl font-light tracking-tight text-white sm:text-7xl">{title}</h1>}
+   <div className={`absolute inset-0 hidden items-center md:flex ${desktopAlignmentClasses}`}>
+    <div className="mx-auto w-full max-w-7xl px-10">
+     <div className={`max-w-lg ${contentAlignment === "left" ? "mr-auto text-left" : contentAlignment === "right" ? "ml-auto text-right" : "mx-auto text-center"}`}>
+      {title && <h1 className="text-5xl font-light tracking-tight text-white sm:text-7xl">{title}</h1>}
 
-     {subtitle && <p className="mt-6 text-lg text-white/90">{subtitle}</p>}
+      {subtitle && <p className="mt-4 text-lg text-white/80">{subtitle}</p>}
 
-     {buttonText && buttonLink && (
-      <Link href={buttonLink} className="mt-8 inline-block rounded bg-white px-6 py-3 text-black">
-       {buttonText}
-      </Link>
-     )}
+      {buttonText && buttonLink && (
+       <Link href={buttonLink} className="mt-8 inline-block border border-white px-8 py-3 text-sm uppercase tracking-wider text-white transition hover:bg-white hover:text-black">
+        {buttonText}
+       </Link>
+      )}
+     </div>
     </div>
    </div>
   </section>

@@ -12,6 +12,8 @@ import { Carousel as ElectronicsCarousel } from "themes/electronics/sections/car
 import { FeaturedProducts as ElectronicsFeaturedProducts } from "themes/electronics/sections/featured-products";
 
 import { Hero as DefaultHero } from "themes/default/sections/hero";
+import { Hero as ElectronicsHero } from "themes/electronics/sections/hero";
+import { Hero as FashionHero } from "themes/fashion/sections/hero";
 
 export const themeRegistry = {
  default: {
@@ -27,7 +29,7 @@ export const themeRegistry = {
   sections: {
    featured_products: FashionFeaturedProducts,
    carousel: FashionCarousel,
-   hero: DefaultHero,
+   hero: FashionHero,
   },
  },
  electronics: {
@@ -35,7 +37,7 @@ export const themeRegistry = {
   sections: {
    featured_products: ElectronicsFeaturedProducts,
    carousel: ElectronicsCarousel,
-   hero: DefaultHero,
+   hero: ElectronicsHero,
   },
  },
 } as const;

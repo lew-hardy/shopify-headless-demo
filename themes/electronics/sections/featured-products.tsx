@@ -35,7 +35,7 @@ export async function FeaturedProducts({ collectionHandle }: { collectionHandle:
  const [firstProduct, secondProduct, thirdProduct] = homepageItems;
 
  return (
-  <section className="mx-auto grid max-w-(--breakpoint-2xl) gap-4 px-4 pb-4 md:grid-cols-6 md:grid-rows-2 lg:max-h-[calc(100vh-200px)]">
+  <section className="mx-auto grid max-w-(--breakpoint-2xl) gap-4 px-4 py-4 md:grid-cols-6 md:grid-rows-2 lg:max-h-[calc(100vh-200px)]">
    <FeaturedProductsItem size="full" item={firstProduct} priority={true} />
    <FeaturedProductsItem size="half" item={secondProduct} priority={true} />
    <FeaturedProductsItem size="half" item={thirdProduct} />

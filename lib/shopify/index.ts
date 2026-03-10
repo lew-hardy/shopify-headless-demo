@@ -464,6 +464,8 @@ export type HomepageSection = {
  buttonLink?: string;
  contentAlignment?: string;
  contentAlignmentMobile?: string;
+ contentVerticalAlignment?: string;
+ contentVerticalAlignmentMobile?: string;
 };
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
@@ -499,6 +501,9 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
    const contentAlignment = map.content_alignment?.value ?? "center";
    const contentAlignmentMobile = map.content_alignment_mobile?.value ?? "center";
 
+   const contentVerticalAlignment = map.content_vertical_alignment?.value ?? "middle";
+   const contentVerticalAlignmentMobile = map.content_vertical_alignment_mobile?.value ?? "middle";
+
    return {
     title,
     type,
@@ -511,6 +516,8 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
     buttonLink,
     contentAlignment,
     contentAlignmentMobile,
+    contentVerticalAlignment,
+    contentVerticalAlignmentMobile,
    };
   })
   .filter((s: HomepageSection) => s.type);

@@ -15,6 +15,10 @@ import { Hero as DefaultHero } from "themes/default/sections/hero";
 import { Hero as ElectronicsHero } from "themes/electronics/sections/hero";
 import { Hero as FashionHero } from "themes/fashion/sections/hero";
 
+import ProductGridItemsDefault from "themes/default/components/product-grid-items";
+import ProductGridItemsElectronics from "themes/electronics/components/product-grid-items";
+import ProductGridItemsFashion from "themes/fashion/components/product-grid-items";
+
 export const themeRegistry = {
  default: {
   config: defaultTheme,
@@ -22,6 +26,9 @@ export const themeRegistry = {
    featured_products: DefaultFeaturedProducts,
    carousel: DefaultCarousel,
    hero: DefaultHero,
+  },
+  components: {
+   productGrid: ProductGridItemsDefault,
   },
  },
  fashion: {
@@ -31,6 +38,9 @@ export const themeRegistry = {
    carousel: FashionCarousel,
    hero: FashionHero,
   },
+  components: {
+   productGrid: ProductGridItemsFashion,
+  },
  },
  electronics: {
   config: electronicsTheme,
@@ -39,5 +49,8 @@ export const themeRegistry = {
    carousel: ElectronicsCarousel,
    hero: ElectronicsHero,
   },
+  components: {
+   productGrid: ProductGridItemsElectronics,
+  },
  },
-} as const;
+};

@@ -21,7 +21,7 @@ export default async function HomePage() {
      const HeroSection = sectionComponents.hero;
      if (!HeroSection) return null;
 
-     return <HeroSection key={`${section.type}-${section.order}`} title={section.title} subtitle={section.subtitle} image={section.image} imageMobile={section.imageMobile} buttonText={section.buttonText} buttonLink={section.buttonLink} contentAlignment={section.contentAlignment} contentAlignmentMobile={section.contentAlignmentMobile} />;
+     return <HeroSection key={`${section.type}-${section.order}`} title={section.title} subtitle={section.subtitle} image={section.image} imageMobile={section.imageMobile} buttonText={section.buttonText} buttonLink={section.buttonLink} contentAlignment={section.contentAlignment} contentAlignmentMobile={section.contentAlignmentMobile} contentVerticalAlignment={section.contentVerticalAlignment} contentVerticalAlignmentMobile={section.contentVerticalAlignmentMobile} />;
     }
 
     if (section.type === "featured_products") {

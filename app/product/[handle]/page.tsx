@@ -1,6 +1,7 @@
 import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
+import { ProductBadges } from "components/product/product-badges";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
@@ -112,6 +113,7 @@ async function RelatedProducts({ id }: { id: string }) {
     {relatedProducts.map((product) => (
      <li key={product.handle} className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
       <Link className="relative h-full w-full" href={`/product/${product.handle}`} prefetch={true}>
+       <ProductBadges product={product} />
        <GridTileImage
         alt={product.title}
         label={{

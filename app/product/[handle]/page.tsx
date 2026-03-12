@@ -38,11 +38,11 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
         url,
         width,
         height,
-        alt,
+        alt: alt ?? undefined,
        },
       ],
      }
-   : null,
+   : undefined,
  };
 }
 
@@ -82,7 +82,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
        <Gallery
         images={product.images.slice(0, 5).map((image: Image) => ({
          src: image.url,
-         altText: image.altText,
+         altText: image.altText ?? product.title,
         }))}
        />
       </Suspense>

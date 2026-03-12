@@ -38,6 +38,13 @@ export default async function HomePage() {
      return <CarouselSection key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
     }
 
+    if (section.type === "featured_collections") {
+     const FeaturedCollectionsSection = sectionComponents.featured_collections;
+     if (!FeaturedCollectionsSection || !section.collectionHandles?.length) return null;
+
+     return <FeaturedCollectionsSection key={`${section.type}-${section.order}`} title={section.title || "Shop by Collection"} handles={section.collectionHandles} />;
+    }
+
     return null;
    })}
    <Footer />

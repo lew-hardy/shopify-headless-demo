@@ -19,6 +19,8 @@ import ProductGridItemsDefault from "themes/default/components/product-grid-item
 import ProductGridItemsElectronics from "themes/electronics/components/product-grid-items";
 import ProductGridItemsFashion from "themes/fashion/components/product-grid-items";
 
+import FeaturedCollections from "components/home/featured-collections";
+
 export const themeRegistry = {
  default: {
   config: defaultTheme,
@@ -26,6 +28,7 @@ export const themeRegistry = {
    featured_products: DefaultFeaturedProducts,
    carousel: DefaultCarousel,
    hero: DefaultHero,
+   featured_collections: FeaturedCollections,
   },
   components: {
    productGrid: ProductGridItemsDefault,
@@ -37,6 +40,7 @@ export const themeRegistry = {
    featured_products: FashionFeaturedProducts,
    carousel: FashionCarousel,
    hero: FashionHero,
+   featured_collections: FeaturedCollections,
   },
   components: {
    productGrid: ProductGridItemsFashion,
@@ -48,6 +52,7 @@ export const themeRegistry = {
    featured_products: ElectronicsFeaturedProducts,
    carousel: ElectronicsCarousel,
    hero: ElectronicsHero,
+   featured_collections: FeaturedCollections,
   },
   components: {
    productGrid: ProductGridItemsElectronics,

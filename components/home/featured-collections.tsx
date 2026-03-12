@@ -9,14 +9,14 @@ type Props = {
  handles?: string[];
 };
 
-export default async function FeaturedCollections({ title = "Shop by Collection", limit = 3, handles }: Props) {
+export default async function FeaturedCollections({ title = "Shop by Collection", limit = 3, handles = [] }: Props) {
  const collections = await getCollections();
 
  const filteredCollections = collections
   .filter((collection) => collection.handle)
-  .filter((collection) => (handles?.length ? handles.includes(collection.handle) : true))
+  .filter((collection) => (handles.length ? handles.includes(collection.handle) : true))
   .sort((a, b) => {
-   if (!handles?.length) return 0;
+   if (!handles.length) return 0;
    return handles.indexOf(a.handle) - handles.indexOf(b.handle);
   })
   .slice(0, limit);

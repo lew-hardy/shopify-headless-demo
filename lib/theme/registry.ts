@@ -1,3 +1,5 @@
+import FeaturedCollections from "components/home/featured-collections";
+
 import { theme as defaultTheme } from "themes/default/config";
 import { theme as electronicsTheme } from "themes/electronics/config";
 import { theme as fashionTheme } from "themes/fashion/config";
@@ -18,8 +20,6 @@ import { Hero as FashionHero } from "themes/fashion/sections/hero";
 import ProductGridItemsDefault from "themes/default/components/product-grid-items";
 import ProductGridItemsElectronics from "themes/electronics/components/product-grid-items";
 import ProductGridItemsFashion from "themes/fashion/components/product-grid-items";
-
-import FeaturedCollections from "components/home/featured-collections";
 
 export const themeRegistry = {
  default: {
@@ -58,4 +58,4 @@ export const themeRegistry = {
    productGrid: ProductGridItemsElectronics,
   },
  },
-};
+} as const;

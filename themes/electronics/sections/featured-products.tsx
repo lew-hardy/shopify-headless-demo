@@ -1,4 +1,5 @@
 import { GridTileImage } from "components/grid/tile";
+import { ProductBadges } from "components/product/product-badges";
 import { getCollectionProducts } from "lib/shopify";
 import type { Product } from "lib/shopify/types";
 import Link from "next/link";
@@ -7,6 +8,8 @@ function FeaturedProductsItem({ item, size, priority }: { item: Product; size: "
  return (
   <div className={size === "full" ? "md:col-span-4 md:row-span-2" : "md:col-span-2 md:row-span-1"}>
    <Link className="relative block aspect-square h-full w-full" href={`/product/${item.handle}`} prefetch={true}>
+    <ProductBadges product={item} />
+
     <GridTileImage
      src={item.featuredImage.url}
      fill

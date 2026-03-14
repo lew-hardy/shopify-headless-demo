@@ -4,9 +4,18 @@ import { getThemeSections } from "lib/theme/get-theme";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+ title: "Your Store Name",
  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
  openGraph: {
   type: "website",
+  title: "Your Store Name",
+  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
+  siteName: "Your Store Name",
+ },
+ twitter: {
+  card: "summary_large_image",
+  title: "Your Store Name",
+  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
  },
 };
 

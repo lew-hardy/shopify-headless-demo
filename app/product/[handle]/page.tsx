@@ -15,7 +15,9 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
  const params = await props.params;
  const product = await getProduct(params.handle);
 
- if (!product) return notFound();
+ if (!product) {
+  return {};
+ }
 
  const { url, width, height, altText: alt } = product.featuredImage || {};
  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);

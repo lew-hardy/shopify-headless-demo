@@ -9,7 +9,9 @@ import { useEffect, useRef, useState } from "react";
 export function Gallery({ images }: { images: { src: string; altText: string }[] }) {
  const router = useRouter();
  const searchParams = useSearchParams();
- const imageIndex = searchParams.has("image") ? parseInt(searchParams.get("image")!) : 0;
+ const imageParam = searchParams.get("image");
+ const parsedIndex = imageParam ? parseInt(imageParam, 10) : 0;
+ const imageIndex = Number.isNaN(parsedIndex) || parsedIndex < 0 || parsedIndex >= images.length ? 0 : parsedIndex;
 
  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
  const lightboxRef = useRef<HTMLDivElement>(null);
@@ -71,41 +73,45 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
 
  const currentImage = images[imageIndex];
 
+ if (!currentImage) return null;
+
  return (
   <>
    <form>
-    <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-neutral-50">
-     {currentImage && (
-      <>
-       <Image className="h-full w-full object-contain cursor-zoom-in" fill sizes="(min-width: 1024px) 66vw, 100vw" alt={currentImage.altText} src={currentImage.src} priority />
+    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-neutral-50">
+     <Image className="h-full w-full cursor-zoom-in object-contain" fill sizes="(min-width: 1024px) 66vw, 100vw" alt={currentImage.altText} src={currentImage.src} priority />
 
-       <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0" aria-label="Open enlarged product image" />
-      </>
-     )}
+     <button type="button" onClick={() => setIsLightboxOpen(true)} className="absolute inset-0" aria-label="Open enlarged product image" />
 
      {images.length > 1 && (
-      <div className="absolute bottom-[15%] z-10 flex w-full justify-center">
-       <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur-sm dark:border-black dark:bg-neutral-900/80">
-        <button formAction={() => updateImage(previousImageIndex)} aria-label="Previous product image" className={buttonClassName}>
-         <ArrowLeftIcon className="h-5" />
-        </button>
-        <div className="mx-1 h-6 w-px bg-neutral-500" />
-        <button formAction={() => updateImage(nextImageIndex)} aria-label="Next product image" className={buttonClassName}>
-         <ArrowRightIcon className="h-5" />
-        </button>
+      <>
+       <div className="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-neutral-700 backdrop-blur-sm dark:bg-black/60 dark:text-white">
+        {imageIndex + 1} / {images.length}
        </div>
-      </div>
+
+       <div className="absolute bottom-4 z-10 flex w-full justify-center">
+        <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur-sm dark:border-black dark:bg-neutral-900/80">
+         <button formAction={() => updateImage(previousImageIndex)} aria-label="Previous product image" className={buttonClassName}>
+          <ArrowLeftIcon className="h-5" />
+         </button>
+         <div className="mx-1 h-6 w-px bg-neutral-500" />
+         <button formAction={() => updateImage(nextImageIndex)} aria-label="Next product image" className={buttonClassName}>
+          <ArrowRightIcon className="h-5" />
+         </button>
+        </div>
+       </div>
+      </>
      )}
     </div>
 
     {images.length > 1 && (
-     <ul className="my-12 flex flex-wrap items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
+     <ul className="my-8 flex flex-wrap items-center justify-center gap-3 overflow-auto py-1 lg:mb-0">
       {images.map((image, index) => {
        const isActive = index === imageIndex;
 
        return (
         <li key={image.src} className="h-20 w-20">
-         <button formAction={() => updateImage(index)} aria-label="Select product image" className="h-full w-full">
+         <button formAction={() => updateImage(index)} aria-label={`Select product image ${index + 1}`} className="h-full w-full">
           <GridTileImage alt={image.altText} src={image.src} width={80} height={80} active={isActive} />
          </button>
         </li>
@@ -115,7 +121,7 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
     )}
    </form>
 
-   {isLightboxOpen && currentImage && (
+   {isLightboxOpen && (
     <div ref={lightboxRef} tabIndex={-1} className="fixed inset-0 z-50 flex items-center justify-center outline-none" onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
      <div className="absolute inset-0 bg-black/90" onClick={() => setIsLightboxOpen(false)} />
 
@@ -132,10 +138,14 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
        <button type="button" onClick={goNext} className="absolute right-4 z-20 rounded-full bg-black/40 p-3 text-white transition hover:bg-black/60" aria-label="Next image">
         <ArrowRightIcon className="h-6 w-6" />
        </button>
+
+       <div className="absolute bottom-6 z-20 rounded-full bg-black/40 px-3 py-1 text-sm text-white">
+        {imageIndex + 1} / {images.length}
+       </div>
       </>
      )}
 
-     <div className="relative z-10 pointer-events-none flex h-full w-full items-center justify-center p-6">
+     <div className="pointer-events-none relative z-10 flex h-full w-full items-center justify-center p-6">
       <Image src={currentImage.src} alt={currentImage.altText} width={1600} height={1600} className="pointer-events-auto max-h-[90vh] w-auto object-contain" />
      </div>
     </div>

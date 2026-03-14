@@ -74,6 +74,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
   name: product.title,
   description: product.description,
   image: product.featuredImage.url,
+  url: `/product/${product.handle}`,
   offers: {
    "@type": "AggregateOffer",
    availability: product.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",

@@ -23,10 +23,6 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
  const collectionUrl = `/search/${collection.handle}`;
  const { SITE_NAME } = process.env;
 
- const title = collection.seo?.title || collection.title;
- const description = collection.seo?.description || collection.description || `${collection.title} products`;
- const collectionUrl = `/search/${collection.handle}`;
-
  return {
   title,
   description,

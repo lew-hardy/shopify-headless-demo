@@ -474,6 +474,11 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
  cacheTag(TAGS.collections);
  cacheLife("days");
 
+ if (!domain) {
+  console.log("Skipping getHomepageSections - Shopify not configured");
+  return [];
+ }
+
  const res = await shopifyFetch<any>({
   query: getHomepageSectionsQuery,
  });

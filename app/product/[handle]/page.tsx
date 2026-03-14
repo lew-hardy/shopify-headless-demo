@@ -15,14 +15,19 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
  const params = await props.params;
  const product = await getProduct(params.handle);
 
- if (!product) return notFound();
+ if (!product) {
+  return {};
+ }
 
  const { url, width, height, altText: alt } = product.featuredImage || {};
  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+ const title = product.seo.title || product.title;
+ const description = product.seo.description || product.description;
+ const productUrl = `/product/${product.handle}`;
 
  return {
-  title: product.seo.title || product.title,
-  description: product.seo.description || product.description,
+  title,
+  description,
   robots: {
    index: indexable,
    follow: indexable,
@@ -31,18 +36,29 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
     follow: indexable,
    },
   },
-  openGraph: url
-   ? {
-      images: [
+  openGraph: {
+   type: "website",
+   title,
+   description,
+   url: productUrl,
+   siteName: "Your Store Name",
+   images: url
+    ? [
        {
         url,
         width,
         height,
         alt: alt ?? undefined,
        },
-      ],
-     }
-   : undefined,
+      ]
+    : [],
+  },
+  twitter: {
+   card: "summary_large_image",
+   title,
+   description,
+   images: url ? [url] : [],
+  },
  };
 }
 

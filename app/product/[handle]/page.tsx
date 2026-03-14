@@ -1,6 +1,7 @@
 import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
+import { ProductBadges } from "components/product/product-badges";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
@@ -14,14 +15,19 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
  const params = await props.params;
  const product = await getProduct(params.handle);
 
- if (!product) return notFound();
+ if (!product) {
+  return {};
+ }
 
  const { url, width, height, altText: alt } = product.featuredImage || {};
  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+ const title = product.seo.title || product.title;
+ const description = product.seo.description || product.description;
+ const productUrl = `/product/${product.handle}`;
 
  return {
-  title: product.seo.title || product.title,
-  description: product.seo.description || product.description,
+  title,
+  description,
   robots: {
    index: indexable,
    follow: indexable,
@@ -30,18 +36,29 @@ export async function generateMetadata(props: { params: Promise<{ handle: string
     follow: indexable,
    },
   },
-  openGraph: url
-   ? {
-      images: [
+  openGraph: {
+   type: "website",
+   title,
+   description,
+   url: productUrl,
+   siteName: "Your Store Name",
+   images: url
+    ? [
        {
         url,
         width,
         height,
-        alt,
+        alt: alt ?? undefined,
        },
-      ],
-     }
-   : null,
+      ]
+    : [],
+  },
+  twitter: {
+   card: "summary_large_image",
+   title,
+   description,
+   images: url ? [url] : [],
+  },
  };
 }
 
@@ -57,6 +74,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
   name: product.title,
   description: product.description,
   image: product.featuredImage.url,
+  url: `/product/${product.handle}`,
   offers: {
    "@type": "AggregateOffer",
    availability: product.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
@@ -81,7 +99,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
        <Gallery
         images={product.images.slice(0, 5).map((image: Image) => ({
          src: image.url,
-         altText: image.altText,
+         altText: image.altText ?? product.title,
         }))}
        />
       </Suspense>
@@ -112,6 +130,7 @@ async function RelatedProducts({ id }: { id: string }) {
     {relatedProducts.map((product) => (
      <li key={product.handle} className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
       <Link className="relative h-full w-full" href={`/product/${product.handle}`} prefetch={true}>
+       <ProductBadges product={product} />
        <GridTileImage
         alt={product.title}
         label={{

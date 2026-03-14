@@ -1,4 +1,5 @@
 import Grid from "components/grid";
+import { ProductBadges } from "components/product/product-badges";
 import { Product } from "lib/shopify/types";
 import Link from "next/link";
 
@@ -8,7 +9,8 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
    {products.map((product) => (
     <Grid.Item key={product.handle} className="animate-fadeIn">
      <Link href={`/product/${product.handle}`} className="group block w-full" prefetch={true}>
-      <div className="aspect-square overflow-hidden bg-neutral-100">
+      <div className="relative aspect-square overflow-hidden bg-neutral-100">
+       <ProductBadges product={product} />
        <img src={product.featuredImage?.url} alt={product.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
       </div>
 

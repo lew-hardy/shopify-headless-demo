@@ -4,9 +4,18 @@ import { getThemeSections } from "lib/theme/get-theme";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+ title: "Your Store Name",
  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
  openGraph: {
   type: "website",
+  title: "Your Store Name",
+  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
+  siteName: "Your Store Name",
+ },
+ twitter: {
+  card: "summary_large_image",
+  title: "Your Store Name",
+  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
  },
 };
 
@@ -36,6 +45,13 @@ export default async function HomePage() {
      if (!CarouselSection || !section.collectionHandle) return null;
 
      return <CarouselSection key={`${section.type}-${section.order}`} collectionHandle={section.collectionHandle} />;
+    }
+
+    if (section.type === "featured_collections") {
+     const FeaturedCollectionsSection = sectionComponents.featured_collections;
+     if (!FeaturedCollectionsSection) return null;
+
+     return <FeaturedCollectionsSection key={`${section.type}-${section.order}`} title={section.title || "Shop by Collection"} handles={section.collectionHandles ?? []} />;
     }
 
     return null;

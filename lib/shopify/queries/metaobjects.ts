@@ -1,11 +1,8 @@
 export const getHomepageSectionsQuery = /* GraphQL */ `
  query getHomepageSections {
-  metaobjects(type: "homepage_section", first: 25) {
+  metaobjects(type: "homepage_section", first: 50) {
    edges {
     node {
-     id
-     type
-     handle
      fields {
       key
       value
@@ -17,7 +14,17 @@ export const getHomepageSectionsQuery = /* GraphQL */ `
        ... on MediaImage {
         image {
          url
-         altText
+        }
+       }
+       ... on GenericFile {
+        url
+       }
+      }
+      references(first: 10) {
+       nodes {
+        __typename
+        ... on Collection {
+         handle
         }
        }
       }

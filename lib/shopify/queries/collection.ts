@@ -1,57 +1,61 @@
 import productFragment from "../fragments/product";
 
 export const collectionFragment = /* GraphQL */ `
- fragment collection on Collection {
-  handle
-  title
-  description
-  updatedAt
-  image {
-   url
-   altText
-   width
-   height
+  fragment collection on Collection {
+    handle
+    title
+    description
+    updatedAt
+    image {
+      url
+      altText
+      width
+      height
+    }
+    seo {
+      title
+      description
+    }
   }
-  seo {
-   title
-   description
-  }
- }
 `;
 
 export const getCollectionQuery = /* GraphQL */ `
- query getCollection($handle: String!) {
-  collection(handle: $handle) {
-   ...collection
+  query getCollection($handle: String!) {
+    collection(handle: $handle) {
+      ...collection
+    }
   }
- }
- ${collectionFragment}
+  ${collectionFragment}
 `;
 
 export const getCollectionsQuery = /* GraphQL */ `
- query getCollections {
-  collections(first: 100, sortKey: TITLE) {
-   edges {
-    node {
-     ...collection
+  query getCollections {
+    collections(first: 100, sortKey: TITLE) {
+      edges {
+        node {
+          ...collection
+        }
+      }
     }
-   }
   }
- }
- ${collectionFragment}
+  ${collectionFragment}
 `;
 
 export const getCollectionProductsQuery = /* GraphQL */ `
- query getCollectionProducts($handle: String!, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
-  collection(handle: $handle) {
-   products(sortKey: $sortKey, reverse: $reverse, first: 100) {
-    edges {
-     node {
-      ...product
-     }
+  query getCollectionProducts(
+    $handle: String!
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+  ) {
+    collection(handle: $handle) {
+      products(sortKey: $sortKey, reverse: $reverse, first: 100) {
+        edges {
+          node {
+            ...product
+          }
+        }
+      }
     }
-   }
   }
- }
- ${productFragment}
+  ${productFragment}
 `;

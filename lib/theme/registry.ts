@@ -22,40 +22,40 @@ import ProductGridItemsElectronics from "themes/electronics/components/product-g
 import ProductGridItemsFashion from "themes/fashion/components/product-grid-items";
 
 export const themeRegistry = {
- default: {
-  config: defaultTheme,
-  sections: {
-   featured_products: DefaultFeaturedProducts,
-   carousel: DefaultCarousel,
-   hero: DefaultHero,
-   featured_collections: FeaturedCollections,
+  default: {
+    config: defaultTheme,
+    sections: {
+      featured_products: DefaultFeaturedProducts,
+      carousel: DefaultCarousel,
+      hero: DefaultHero,
+      featured_collections: FeaturedCollections,
+    },
+    components: {
+      productGrid: ProductGridItemsDefault,
+    },
   },
-  components: {
-   productGrid: ProductGridItemsDefault,
+  fashion: {
+    config: fashionTheme,
+    sections: {
+      featured_products: FashionFeaturedProducts,
+      carousel: FashionCarousel,
+      hero: FashionHero,
+      featured_collections: FeaturedCollections,
+    },
+    components: {
+      productGrid: ProductGridItemsFashion,
+    },
   },
- },
- fashion: {
-  config: fashionTheme,
-  sections: {
-   featured_products: FashionFeaturedProducts,
-   carousel: FashionCarousel,
-   hero: FashionHero,
-   featured_collections: FeaturedCollections,
+  electronics: {
+    config: electronicsTheme,
+    sections: {
+      featured_products: ElectronicsFeaturedProducts,
+      carousel: ElectronicsCarousel,
+      hero: ElectronicsHero,
+      featured_collections: FeaturedCollections,
+    },
+    components: {
+      productGrid: ProductGridItemsElectronics,
+    },
   },
-  components: {
-   productGrid: ProductGridItemsFashion,
-  },
- },
- electronics: {
-  config: electronicsTheme,
-  sections: {
-   featured_products: ElectronicsFeaturedProducts,
-   carousel: ElectronicsCarousel,
-   hero: ElectronicsHero,
-   featured_collections: FeaturedCollections,
-  },
-  components: {
-   productGrid: ProductGridItemsElectronics,
-  },
- },
 } as const;

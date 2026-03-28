@@ -11,6 +11,7 @@ import { getMenuQuery } from "./queries/menu";
 import { getHomepageSectionsQuery } from "./queries/metaobjects";
 import { getPageQuery, getPagesQuery } from "./queries/page";
 import { getProductQuery, getProductRecommendationsQuery, getProductsQuery } from "./queries/product";
+import { getSearchProductsQuery } from "./queries/search";
 import {
   Cart,
   Collection,
@@ -35,6 +36,7 @@ import {
   ShopifyProductRecommendationsOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
+  ShopifySearchProductsOperation,
   ShopifyUpdateCartOperation,
 } from "./types";
 
@@ -43,6 +45,18 @@ const endpoint = domain ? `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}` : "";
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 type ExtractVariables<T> = T extends { variables: object } ? T["variables"] : never;
+
+export async function getSearchProducts(query: string, first: number = 12) {
+ const res = await shopifyFetch<ShopifySearchProductsOperation>({
+  query: getSearchProductsQuery,
+  variables: {
+   query,
+   first,
+  },
+ });
+
+ return res.body.data.search.edges.map((edge) => edge.node);
+}
 
 export async function shopifyFetch<T>({ headers, query, variables }: { headers?: HeadersInit; query: string; variables?: ExtractVariables<T> }): Promise<{ status: number; body: T } | never> {
  try {

@@ -288,3 +288,33 @@ export type ShopifyProductsOperation = {
   sortKey?: string;
  };
 };
+
+export type ShopifySearchProductsOperation = {
+ data: {
+  search: {
+   edges: Array<{
+    node: {
+     id: string;
+     handle: string;
+     title: string;
+     featuredImage?: {
+      url: string;
+      altText?: string | null;
+      width?: number;
+      height?: number;
+     } | null;
+     priceRange: {
+      maxVariantPrice: {
+       amount: string;
+       currencyCode: string;
+      };
+     };
+    };
+   }>;
+  };
+ };
+ variables: {
+  query: string;
+  first: number;
+ };
+};

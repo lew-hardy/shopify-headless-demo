@@ -6,6 +6,7 @@ import { ProductBadges } from "components/product/product-badges";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
+import { getAiAssistantEnabled } from "lib/shopify/get-ai-assistant-enabled";
 import type { Image, Product } from "lib/shopify/types";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -86,7 +87,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
 
  if (!product) return notFound();
 
- const relatedProducts = await getProductRecommendations(product.id);
+ const [relatedProducts, aiEnabled] = await Promise.all([getProductRecommendations(product.id), getAiAssistantEnabled()]);
 
  const assistantProducts = [mapProductForAssistant(product), ...relatedProducts.map(mapProductForAssistant)];
 
@@ -133,9 +134,11 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
        <ProductDescription product={product} />
       </Suspense>
 
-      <div className="mt-8">
-       <AIAssistantChat products={assistantProducts} />
-      </div>
+      {aiEnabled && (
+       <div className="mt-8">
+        <AIAssistantChat products={assistantProducts} />
+       </div>
+      )}
      </div>
     </div>
 

@@ -5,7 +5,7 @@ import { Gallery } from "components/product/gallery";
 import { ProductBadges } from "components/product/product-badges";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-import { getProduct, getProductRecommendations } from "lib/shopify";
+import { getProduct, getProductRecommendations, getProducts } from "lib/shopify";
 import { getAiAssistantEnabled } from "lib/shopify/get-ai-assistant-enabled";
 import type { Image, Product } from "lib/shopify/types";
 import type { Metadata } from "next";
@@ -87,9 +87,9 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
 
  if (!product) return notFound();
 
- const [relatedProducts, aiEnabled] = await Promise.all([getProductRecommendations(product.id), getAiAssistantEnabled()]);
+ const [relatedProducts, extraProducts, aiEnabled] = await Promise.all([getProductRecommendations(product.id), getProducts({}), getAiAssistantEnabled()]);
 
- const assistantProducts = [mapProductForAssistant(product), ...relatedProducts.map(mapProductForAssistant)];
+ const assistantProducts = [mapProductForAssistant(product), ...relatedProducts.slice(0, 8).map(mapProductForAssistant), ...extraProducts.slice(0, 12).map(mapProductForAssistant)];
 
  const productJsonLd = {
   "@context": "https://schema.org",

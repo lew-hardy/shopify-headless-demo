@@ -1,16 +1,16 @@
+import { AIAssistantPanel } from "components/ai-assistant/ai-assistant-panel";
+import { AIAssistantProvider } from "components/ai-assistant/ai-assistant-provider";
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
+import { getAiAssistantEnabled } from "lib/shopify/get-ai-assistant-enabled";
 import { baseUrl } from "lib/utils";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
-
-import { AIAssistantPanel } from "components/ai-assistant/ai-assistant-panel";
-import { AIAssistantProvider } from "components/ai-assistant/ai-assistant-provider";
 
 const { SITE_NAME } = process.env;
 
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
- // Don't await the fetch, pass the Promise to the context provider
  const cart = getCart();
+ const aiEnabled = await getAiAssistantEnabled();
 
  return (
   <html lang="en" className={GeistSans.variable}>
@@ -41,8 +41,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
        <Toaster closeButton />
        <WelcomeToast />
       </main>
+
+      {aiEnabled && <AIAssistantPanel />}
      </CartProvider>
-     <AIAssistantPanel />
     </AIAssistantProvider>
    </body>
   </html>

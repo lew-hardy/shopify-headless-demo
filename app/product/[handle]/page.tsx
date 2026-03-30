@@ -87,9 +87,9 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
 
  if (!product) return notFound();
 
- const [relatedProducts, extraProducts, aiEnabled] = await Promise.all([getProductRecommendations(product.id), getProducts({}), getAiAssistantEnabled()]);
+ const [relatedProducts, allProducts, aiEnabled] = await Promise.all([getProductRecommendations(product.id), getProducts({}), getAiAssistantEnabled()]);
 
- const assistantProducts = [mapProductForAssistant(product), ...relatedProducts.slice(0, 8).map(mapProductForAssistant), ...extraProducts.slice(0, 12).map(mapProductForAssistant)];
+ const assistantProducts = [mapProductForAssistant(product), ...allProducts.filter((catalogProduct) => catalogProduct.id !== product.id).map(mapProductForAssistant)];
 
  const productJsonLd = {
   "@context": "https://schema.org",
@@ -136,7 +136,7 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
      </div>
     </div>
 
-    <AIAssistantPageContext products={assistantProducts} />
+    {aiEnabled && <AIAssistantPageContext products={assistantProducts} />}
 
     <RelatedProducts products={relatedProducts} />
    </div>

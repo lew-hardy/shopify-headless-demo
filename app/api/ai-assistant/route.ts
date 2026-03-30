@@ -1,3 +1,4 @@
+import { getAiAssistantEnabled } from "lib/shopify/get-ai-assistant-enabled";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -77,7 +78,7 @@ function isValidProductArray(value: unknown): value is Product[] {
 }
 
 function sanitizeProducts(products: Product[]): Product[] {
- return products.slice(0, 50).map((product) => ({
+ return products.slice(0, 10).map((product) => ({
   id: product.id,
   handle: product.handle,
   title: product.title,
@@ -112,6 +113,8 @@ Rules:
 - If none match, say you don't know based on the current store data.
 - Do not mention any knowledge outside the provided data.
 - Do not claim to have browsed the website or checked live inventory unless explicitly present in the data.
+- When recommending products, return them separately in a "products" array with "title" and "handle".
+- Do not embed links in the text response.
 `.trim();
 }
 
@@ -124,7 +127,13 @@ Store product data (JSON):
 ${JSON.stringify(products, null, 2)}
 
 Task:
-Answer the customer using only the store product data above.
+Return a JSON object with:
+- "reply": short helpful answer
+- "products": array of recommended products with "title" and "handle"
+
+If no products match, return an empty array.
+
+Only use the provided product data.
 `.trim();
 }
 
@@ -133,6 +142,12 @@ export async function POST(req: NextRequest) {
 
  if (!checkRateLimit(ip)) {
   return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+ }
+
+ const aiEnabled = await getAiAssistantEnabled();
+
+ if (!aiEnabled) {
+  return NextResponse.json({ error: "AI assistant is disabled." }, { status: 403 });
  }
 
  if (!process.env.OPENAI_API_KEY) {
@@ -166,8 +181,9 @@ export async function POST(req: NextRequest) {
 
  try {
   const completion = await openai.chat.completions.create({
-   model: process.env.OPENAI_MODEL || "gpt-5.2",
+   model: process.env.OPENAI_MODEL || "gpt-5.4-mini",
    temperature: 0.2,
+   response_format: { type: "json_object" },
    messages: [
     {
      role: "system",
@@ -180,11 +196,22 @@ export async function POST(req: NextRequest) {
    ],
   });
 
-  const reply = completion.choices[0]?.message?.content?.trim() || "I don't know based on the current store data.";
+  let parsed: { reply?: unknown; products?: unknown } = {};
+
+  try {
+   parsed = JSON.parse(completion.choices[0]?.message?.content || "{}");
+  } catch {
+   parsed = {
+    reply: "I don't know based on the current store data.",
+    products: [],
+   };
+  }
+
+  const recommendedProducts = Array.isArray(parsed.products) ? parsed.products.filter((product: unknown): product is { title: string; handle: string } => !!product && typeof product === "object" && typeof (product as { title?: unknown }).title === "string" && typeof (product as { handle?: unknown }).handle === "string").slice(0, 3) : [];
 
   return NextResponse.json({
-   reply,
-   requestId: completion._request_id,
+   reply: typeof parsed.reply === "string" && parsed.reply.trim() ? parsed.reply : "I don't know based on the current store data.",
+   products: recommendedProducts,
   });
  } catch (error) {
   console.error("AI assistant error:", error);

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Product = {
@@ -26,6 +27,7 @@ type Props = {
 type ChatMessage = {
  role: "user" | "assistant";
  content: string;
+ products?: { title: string; handle: string }[];
 };
 
 export function AIAssistantChat({ products }: Props) {
@@ -71,6 +73,7 @@ export function AIAssistantChat({ products }: Props) {
     {
      role: "assistant",
      content: data.reply || "I don't know based on the current store data.",
+     products: data.products,
     },
    ]);
   } catch (error) {
@@ -98,8 +101,18 @@ export function AIAssistantChat({ products }: Props) {
    <div className="mb-4 h-[400px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50 p-3">
     <div className="space-y-3">
      {messages.map((message, index) => (
-      <div key={`${message.role}-${index}`} className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${message.role === "user" ? "ml-auto bg-black text-white" : "bg-white text-neutral-900 border border-neutral-200"}`}>
-       {message.content}
+      <div key={index}>
+       <div>{message.content}</div>
+
+       {message.products && message.products.length > 0 && (
+        <div className="mt-2 space-y-1">
+         {message.products.map((product) => (
+          <Link key={product.handle} href={`/product/${product.handle}`} className="block text-sm underline">
+           {product.title}
+          </Link>
+         ))}
+        </div>
+       )}
       </div>
      ))}
 

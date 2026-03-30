@@ -1,4 +1,4 @@
-import { AIAssistantChat } from "components/ai-assistant-chat";
+import { AIAssistantPageContext } from "components/ai-assistant/ai-assistant-page-context";
 import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
@@ -133,14 +133,10 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
       <Suspense fallback={null}>
        <ProductDescription product={product} />
       </Suspense>
-
-      {aiEnabled && (
-       <div className="mt-8">
-        <AIAssistantChat products={assistantProducts} />
-       </div>
-      )}
      </div>
     </div>
+
+    <AIAssistantPageContext products={assistantProducts} />
 
     <RelatedProducts products={relatedProducts} />
    </div>
